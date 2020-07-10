@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import About from './AboutComponent';
 import Menu from "./MenuComponent";
 import DishDetail from "./DishdetailComponent";
 import { DISHES } from '../shared/dishes';
@@ -27,13 +28,27 @@ class Main extends Component {
         <Home dish={this.state.dishes.filter((dish) => dish.featured)[0]} promotion={this.state.promotions.filter((promotion) => promotion.featured)[0]} leader={this.state.leaders.filter((leader) => leader.featured)[0]}/>
       )
     }
+    const DishWithId = ({match}) => {
+      return(
+        <DishDetail dish={this.state.dishes.filter((dish)=>dish.id===parseInt(match.params.dishId,10))[0]}
+        comments={this.state.comments.filter((comment) => comment.dishId ===parseInt(match.params.dishId,10))}
+        />
+      );
+    }
+    const AboutUs = () => {
+      return(
+        <About leaders={this.state.leaders} />
+      )
+    }
     return (
       <div>
         <Header></Header>
         <Switch>
           <Route path="/home" component={HomePage} />
           <Route exact path="/menu" component={() => <Menu dishes={this.state.dishes} />} />
+          <Route path="/menu/:dishId" component={DishWithId}></Route>
           <Route exact path="/contactus" component={Contact} />
+          <Route exact path="/aboutus" component={AboutUs} />
           <Redirect to="/home" />
         </Switch>
         <Footer></Footer>

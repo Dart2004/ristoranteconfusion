@@ -11,10 +11,11 @@ class CommentForm extends Component{
             isModalOpen: false
         }
         this.toggleModal = this.toggleModal.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleSubmit(values){
-        console.log("Current State is: " + JSON.stringify(values));
-        alert("Current State is: " + JSON.stringify(values));
+        this.toggleModal();
+        this.props.addComment(this.props.dishId, values.rating, values.name, values.comment);
     }
     toggleModal() {
         if (this.state.isModalOpen==true){
@@ -93,7 +94,7 @@ class CommentForm extends Component{
             return(<div></div>);
         }
     }
-    function RenderComments({dish, comments}){
+    function RenderComments({dish, comments, addComment, dishId}){
         if (dish!=null) {
             const allcomments=comments.map(comment=>{
                 return(
@@ -110,7 +111,7 @@ class CommentForm extends Component{
                     <Media list>
                         {allcomments}
                     </Media>
-                    <CommentForm />
+                    <CommentForm dishId={dishId} addComment={addComment} />
                 </div>
             );
         }
@@ -140,7 +141,7 @@ class CommentForm extends Component{
                     <div className="col-12 col-md-5 m-1">
                         <RenderDish dish={props.dish}></RenderDish>
                     </div>
-                    <RenderComments dish={props.dish} comments={props.comments}></RenderComments>
+                    <RenderComments dish={props.dish} comments={props.comments} addComment={props.addComment} dishId={props.dish.id}></RenderComments>
                 </div>
             </div>
         );
